@@ -3,20 +3,13 @@
 <head>
     <title>Job Portal</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- ✅ Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Your custom stylesheet -->
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-
     <script>
-        // Set dark mode before content loads to avoid white flash
         if (localStorage.getItem('darkMode') === 'on') {
             document.documentElement.classList.add('dark-mode');
         }
     </script>
-
+    
     <style>
     body {
         font-family: Arial, sans-serif;
@@ -93,11 +86,6 @@
         height: 32px;
     }
 
-    #darkModeToggle i {
-        color: orange;
-        font-size: 1em;
-    }
-
     .alert {
         padding: 10px;
         margin-bottom: 15px;
@@ -122,62 +110,33 @@
         border: 1px solid #bee5eb;
     }
 
-    /* ✅ MOBILE-ONLY STYLES */
+    /* ✅ Mobile responsiveness only */
     @media (max-width: 768px) {
-        body {
-            padding: 10px;
-        }
-
         header {
             flex-direction: column;
             align-items: flex-start;
-            gap: 10px;
         }
 
         nav {
             justify-content: flex-start;
-            gap: 6px;
-            flex-wrap: wrap;
-        }
-
-        nav a {
-            margin-right: 6px;
-        }
-
-        .container,
-        .row,
-        .col {
-            width: 100% !important;
-            padding-left: 0 !important;
-            padding-right: 0 !important;
-            margin: 0 auto !important;
-        }
-
-        form,
-        input,
-        select,
-        textarea,
-        button {
             width: 100%;
-            font-size: 16px;
+            flex-direction: column;
+            gap: 8px;
         }
 
-        .alert {
-            font-size: 14px;
-        }
-
-        #darkModeToggle {
-            width: auto;
-            height: auto;
-            padding: 6px;
+        nav a, nav span, form, #darkModeToggle {
+            width: 100%;
+            display: block;
+            margin: 4px 0;
         }
 
         h1 {
-            font-size: 1.5rem;
+            font-size: 1.4em;
         }
     }
     </style>
 </head>
+
 <body>
     <header>
         <div>
@@ -198,7 +157,6 @@
                 {% endif %}
             {% endif %}
 
-            <!-- 🌐 Language Selector -->
             <form style="display:inline;">
                 <select onchange="location.href='{{ url_for('set_language', lang_code='') }}' + this.value">
                     {% for code, name in LANGUAGES.items() %}
@@ -209,8 +167,7 @@
                 </select>
             </form>
 
-            <!-- 🌙 Dark Mode Button -->
-            <button id="darkModeToggle" title="Toggle Dark Mode" style="margin-left: auto;">
+            <button id="darkModeToggle" title="Toggle Dark Mode">
                 <i class="fas fa-moon"></i>
             </button>
         </nav>
@@ -226,7 +183,6 @@
                         {% endfor %}
                     {% endif %}
                 {% endwith %}
-
                 {% block content %}{% endblock %}
             </div>
         </div>
@@ -234,7 +190,6 @@
 
     <!-- Font Awesome for icons -->
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-
     <script>
         const toggleBtn = document.getElementById('darkModeToggle');
         const icon = toggleBtn.querySelector('i');
@@ -243,13 +198,11 @@
             if (on) {
                 document.documentElement.classList.add('dark-mode');
                 localStorage.setItem('darkMode', 'on');
-                icon.classList.remove('fa-moon');
-                icon.classList.add('fa-sun');
+                icon.classList.replace('fa-moon', 'fa-sun');
             } else {
                 document.documentElement.classList.remove('dark-mode');
                 localStorage.setItem('darkMode', 'off');
-                icon.classList.remove('fa-sun');
-                icon.classList.add('fa-moon');
+                icon.classList.replace('fa-sun', 'fa-moon');
             }
         }
 

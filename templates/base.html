@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Job Portal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script>
+        // Set dark mode before content loads to avoid white flash
+        if (localStorage.getItem('darkMode') === 'on') {
+            document.documentElement.classList.add('dark-mode');
+        }
+    </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: var(--bg);
+            color: var(--text);
+            transition: background 0.3s, color 0.3s;
+        }
+        
+        
+
+        :root {
+            --bg: #fff;
+            --text: #000;
+        }
+
+        .dark-mode {
+            --bg: #121212;
+            --text: #e0e0e0;
+        }
+
+                /* Enhanced dark mode elements */
+                .dark-mode select,
+        .dark-mode input,
+        .dark-mode textarea {
+            background-color: #2c2c2c;
+            color: #fff;
+            border-color: #555;
+        }
+
+        .dark-mode a {
+            color: #80caff;
+        }
+
+        nav {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-left: auto;
+}
+
+
+
+        #darkModeToggle i {
+    color: orange;
+    font-size: 18px;
+}
+
+
+header {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+
+        nav a {
+            margin-right: 10px;
+            text-decoration: none;
+            color: blue;
+        }
+
+        nav span {
+            margin-right: 10px;
+        }
+
+        #darkModeToggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    font-size: 1em;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+}
+
+#darkModeToggle i {
+    color: orange;
+    font-size: 1em;
+}
+
+
+        .alert {
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .alert-info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div>
+            <h1><a href="{{ url_for('home') }}">{{ _('Job Portal') }}</a></h1>
+        </div>
+        <nav style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+            {% if user %}
+                <span>Welcome, {{ user.username }}!</span>        
+                <a href="{{ url_for('profile') }}">{{ _('My Profile')}} </a>
+                <a href="{{ url_for('post_job') }}">{{ _('Post Job')}} </a>
+                <a href="{{ url_for('logout') }}">{{ _('Logout')}} </a>
+            {% else %}
+                {% if request.endpoint != 'register' %}
+                    <a href="{{ url_for('register') }}">{{ _('Register') }}</a>
+                {% endif %}
+                {% if request.endpoint != 'login' %}
+                <a href="{{ request.args.get('next') or url_for('home') }}">🏠 Home</a>
+
+                {% endif %}
+            {% endif %}
+        
+          <!-- 🌐 Language Selector -->
+<form style="display:inline;">
+    <select onchange="location.href='{{ url_for('set_language', lang_code='') }}' + this.value">
+        {% for code, name in LANGUAGES.items() %}
+            <option value="{{ code }}" {% if code == get_locale() %}selected{% endif %}>
+                {{ name }}
+            </option>
+        {% endfor %}
+    </select>
+</form>
+
+        
+            <!-- 🌙 Dark Mode Button -->
+            <button id="darkModeToggle" title="Toggle Dark Mode" style="margin-left: auto;">
+                <i class="fas fa-moon"></i>
+            </button>
+        </nav>
+        
+    </header>
+
+    <main>
+        <!-- ✅ Flash messages block -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Font Awesome for icons -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+    <script>
+        const toggleBtn = document.getElementById('darkModeToggle');
+        const icon = toggleBtn.querySelector('i');
+
+        function setDarkMode(on) {
+            if (on) {
+                document.documentElement.classList.add('dark-mode');
+                localStorage.setItem('darkMode', 'on');
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            } else {
+                document.documentElement.classList.remove('dark-mode');
+                localStorage.setItem('darkMode', 'off');
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            }
+        }
+
+        toggleBtn.addEventListener('click', () => {
+            const isDark = document.documentElement.classList.contains('dark-mode');
+            setDarkMode(!isDark);
+        });
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const isDark = document.documentElement.classList.contains('dark-mode');
+            icon.classList.toggle('fa-sun', isDark);
+            icon.classList.toggle('fa-moon', !isDark);
+        });
+    </script>
+</body>
+</html>

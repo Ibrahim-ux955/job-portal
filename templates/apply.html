@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ _('Apply for') }} {{ job.title }}</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .form-wrapper {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background-color: #155ab6;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-wrapper">
+        <h1>{{ _('Apply for') }} {{ job.title }}</h1>
+        <form method="POST">
+            <label>{{ _('Your Name:') }}</label>
+            <input type="text" name="name" required>
+
+            <label>{{ _('Your Email:') }}</label>
+            <input type="email" name="email" required>
+
+            <label>{{ _('Message:') }}</label>
+            <textarea name="message" required></textarea>
+
+            <button type="submit">{{ _('Submit Application') }}</button>
+        </form>
+    </div>
+</body>
+</html>

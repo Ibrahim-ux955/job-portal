@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ user.username }}'s {{ _('Profile') }}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 40px;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .profile-container {
+            text-align: center;
+            background: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            max-width: 700px;
+            width: 100%;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        ul { list-style: none; padding: 0; }
+        li { margin: 10px 0; }
+        a { color: blue; }
+        button { margin: 5px; padding: 5px 10px; }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+        .edit-form {
+            margin-top: 20px;
+            text-align: left;
+        }
+        .job-list {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .job-card {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 15px 20px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .job-info {
+            max-width: 70%;
+        }
+        .job-location {
+            font-size: 0.9em;
+            color: #555;
+            margin-top: 5px;
+        }
+        .job-actions {
+            display: flex;
+            gap: 10px;
+        }
+        .edit-btn {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .delete-btn {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        <h1>{{ user.username }}'s {{ _('Profile') }}</h1>
+        <h2>{{ _('Hello') }}, {{ user.full_name or user.username }}</h2>
+
+        <p><strong>{{ _('Username') }}:</strong> {{ user.username }}</p>
+        <p><strong>{{ _('Email') }}:</strong> {{ user.email }}</p>
+        <p><strong>{{ _('Location') }}:</strong> {{ user.location }}</p>
+        <p><strong>{{ _('Bio') }}:</strong> {{ user.bio }}</p>
+
+        <!-- Edit button toggles form -->
+        <button onclick="document.getElementById('editForm').style.display='block'">{{ _('Edit Profile') }}</button>
+        <p><a href="{{ url_for('logout') }}" style="color: red;">{{ _('Logout') }}</a></p>
+
+        <!-- Edit Profile Form -->
+        <form id="editForm" class="edit-form" action="{{ url_for('update_profile') }}" method="POST" style="display: none;">
+            <label>{{ _('Username') }}</label>
+            <input type="text" name="username" value="{{ user.username }}" required>
+
+            <label>{{ _('Email') }}</label>
+            <input type="email" name="email" value="{{ user.email }}" required>
+
+            <label>{{ _('Location') }}</label>
+            <input type="text" name="location" value="{{ user.location }}">
+
+            <label>{{ _('Bio') }}</label>
+            <textarea name="bio" rows="4">{{ user.bio }}</textarea>
+
+            <button type="submit">{{ _('Save Changes') }}</button>
+        </form>
+
+        <hr>
+
+        <h2>{{ _('Your Posted Jobs') }}</h2>
+
+        {% if jobs %}
+        <div class="job-list">
+            {% for job in jobs %}
+            <div class="job-card">
+                <div class="job-info">
+                    <strong>{{ job.title }}</strong> at <em>{{ job.company }}</em>
+                    <div class="job-location">
+                        <i class="fas fa-map-marker-alt" style="color:#dc3545; margin-right:5px;"></i> {{ job.location }}
+                    </div>
+                </div>
+                <div class="job-actions">
+                    <a href="{{ url_for('edit_job', job_id=job.id) }}" class="edit-btn">{{ _('Edit') }}</a>
+                    <form action="{{ url_for('delete_job', job_id=job.id) }}" method="POST" style="display:inline;">
+                        <button type="submit" class="delete-btn" onclick="return confirm('{{ _('Delete this job?') }}')">
+                            {{ _('Delete') }}
+                        </button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p>{{ _("You haven't posted any jobs yet.") }}</p>
+        {% endif %}
+    </div>
+</body>
+</html>

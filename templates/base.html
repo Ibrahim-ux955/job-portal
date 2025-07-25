@@ -2,9 +2,11 @@
 <html lang="en">
 <head>
     <title>Job Portal</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <script>
+        // Set dark mode before content loads to avoid white flash
         if (localStorage.getItem('darkMode') === 'on') {
             document.documentElement.classList.add('dark-mode');
         }
@@ -86,6 +88,11 @@
         height: 32px;
     }
 
+    #darkModeToggle i {
+        color: orange;
+        font-size: 1em;
+    }
+
     .alert {
         padding: 10px;
         margin-bottom: 15px;
@@ -109,87 +116,72 @@
         color: #0c5460;
         border: 1px solid #bee5eb;
     }
+</style>
 
-    /* ✅ Mobile responsiveness only */
-    @media (max-width: 768px) {
-        header {
-            flex-direction: column;
-            align-items: flex-start;
-        }
 
-        nav {
-            justify-content: flex-start;
-            width: 100%;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        nav a, nav span, form, #darkModeToggle {
-            width: 100%;
-            display: block;
-            margin: 4px 0;
-        }
-
-        h1 {
-            font-size: 1.4em;
-        }
-    }
-    </style>
 </head>
-
 <body>
     <header>
         <div>
             <h1><a href="{{ url_for('home') }}">{{ _('Job Portal') }}</a></h1>
         </div>
-        <nav>
+        <nav style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
             {% if user %}
                 <span>Welcome, {{ user.username }}!</span>        
-                <a href="{{ url_for('profile') }}">{{ _('My Profile') }}</a>
-                <a href="{{ url_for('post_job') }}">{{ _('Post Job') }}</a>
-                <a href="{{ url_for('logout') }}">{{ _('Logout') }}</a>
+                <a href="{{ url_for('profile') }}">{{ _('My Profile')}} </a>
+                <a href="{{ url_for('post_job') }}">{{ _('Post Job')}} </a>
+                <a href="{{ url_for('logout') }}">{{ _('Logout')}} </a>
             {% else %}
                 {% if request.endpoint != 'register' %}
                     <a href="{{ url_for('register') }}">{{ _('Register') }}</a>
                 {% endif %}
                 {% if request.endpoint != 'login' %}
-                    <a href="{{ request.args.get('next') or url_for('home') }}">🏠 Home</a>
+                <a href="{{ request.args.get('next') or url_for('home') }}">🏠 Home</a>
+
                 {% endif %}
             {% endif %}
+        
+          <!-- 🌐 Language Selector -->
+<form style="display:inline;">
+    <select onchange="location.href='{{ url_for('set_language', lang_code='') }}' + this.value">
+        {% for code, name in LANGUAGES.items() %}
+            <option value="{{ code }}" {% if code == get_locale() %}selected{% endif %}>
+                {{ name }}
+            </option>
+        {% endfor %}
+    </select>
+</form>
 
-            <form style="display:inline;">
-                <select onchange="location.href='{{ url_for('set_language', lang_code='') }}' + this.value">
-                    {% for code, name in LANGUAGES.items() %}
-                        <option value="{{ code }}" {% if code == get_locale() %}selected{% endif %}>
-                            {{ name }}
-                        </option>
-                    {% endfor %}
-                </select>
-            </form>
-
-            <button id="darkModeToggle" title="Toggle Dark Mode">
+        
+            <!-- 🌙 Dark Mode Button -->
+            <button id="darkModeToggle" title="Toggle Dark Mode" style="margin-left: auto;">
                 <i class="fas fa-moon"></i>
             </button>
         </nav>
+        
     </header>
 
     <main class="container-fluid mt-4">
         <div class="row justify-content-center">
-            <div class="col-12 col-md-10 col-lg-8">
-                {% with messages = get_flashed_messages(with_categories=true) %}
-                    {% if messages %}
-                        {% for category, message in messages %}
-                            <div class="alert alert-{{ category }}">{{ message }}</div>
-                        {% endfor %}
-                    {% endif %}
-                {% endwith %}
-                {% block content %}{% endblock %}
-            </div>
+          <div class="col-12 col-md-10 col-lg-8">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                {% for category, message in messages %}
+                  <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+              {% endif %}
+            {% endwith %}
+      
+            {% block content %}{% endblock %}
+          </div>
         </div>
-    </main>
+      </main>
+      
+    
 
     <!-- Font Awesome for icons -->
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
     <script>
         const toggleBtn = document.getElementById('darkModeToggle');
         const icon = toggleBtn.querySelector('i');
@@ -198,11 +190,13 @@
             if (on) {
                 document.documentElement.classList.add('dark-mode');
                 localStorage.setItem('darkMode', 'on');
-                icon.classList.replace('fa-moon', 'fa-sun');
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
             } else {
                 document.documentElement.classList.remove('dark-mode');
                 localStorage.setItem('darkMode', 'off');
-                icon.classList.replace('fa-sun', 'fa-moon');
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
             }
         }
 

@@ -155,10 +155,7 @@ def category_view():
     ]
     return render_template('category_view.html', left=left, right=right)
 
-@app.route('/category/<category_name>')
-def category(category_name):
-    jobs = Job.query.filter_by(category=category_name).all()
-    return render_template('category.html', category_name=category_name, jobs=jobs)
+
 
 
 
@@ -359,11 +356,20 @@ def update_profile():
     return redirect(url_for('profile'))
 
 
-@app.route('/categories')
-def categories():
+@app.route('/category/<category_name>')
+def category(category_name):
     left = ["community", "for sale", "gigs", "housing", "jobs", "services"]
-    right = ["tech", "education", "creative"]  # add more as needed
-    return render_template("category.html", left=left, right=right)
+    right = []  # Add more categories if needed
+    jobs = Job.query.filter(Job.category.ilike(category_name)).all()
+    return render_template(
+        'category.html',
+        category_name=category_name,
+        jobs=jobs,
+        left=left,
+        right=right
+    )
+
+
 
 
 

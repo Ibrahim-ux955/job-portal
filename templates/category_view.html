@@ -92,16 +92,26 @@
     }
 </style>
 
-<div class="category-layout">
-    <!-- Category Sidebar -->
-    <div class="category-left">
-        {% for item in left + right %}
+<div class="category-left" style="display: flex; gap: 10px;">
+    <div style="flex: 1;">
+        {% for item in left %}
             <a href="{{ url_for('category_jobs', category=item) }}"
                class="{% if item == category %}active{% endif %}">
                 {{ item }}
             </a>
         {% endfor %}
     </div>
+    <div style="flex: 1;">
+        {% for item in right %}
+            <a href="{{ url_for('category_jobs', category=item) }}"
+               class="{% if item == category %}active{% endif %}">
+                {{ item }}
+            </a>
+        {% endfor %}
+    </div>
+</div>
+
+
 
     <!-- Jobs Listing -->
     <div class="category-right">

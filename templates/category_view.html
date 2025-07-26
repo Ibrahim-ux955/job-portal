@@ -3,7 +3,7 @@
 <style>
     .category-layout {
         display: flex;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
         background: #f9f9f9;
         border: 1px solid #ccc;
         font-size: 16px;
@@ -18,6 +18,7 @@
         background: #efefef;
         border-right: 1px solid #ccc;
         width: 30%;
+        overflow-y: auto;
     }
 
     .category-right {
@@ -67,17 +68,23 @@
     }
 </style>
 
-<!-- ✅ Craigslist-style category layout with working links -->
 <div class="category-layout">
     <div class="category-left">
-        {% for item in left %}
-            <a href="{{ url_for('category', category_name=item) }}">{{ item }}</a>
+        {% for item in left + right %}
+            <a href="{{ url_for('category_jobs', category=item) }}">{{ item }}</a>
         {% endfor %}
     </div>
     <div class="category-right">
-        {% for item in right %}
-            <a href="{{ url_for('category', category_name=item) }}">{{ item }}</a>
-        {% endfor %}
+        {% if jobs %}
+            <h4>{{ category|capitalize }} Jobs</h4>
+            <ul>
+                {% for job in jobs %}
+                    <li><a href="{{ url_for('job_detail', job_id=job.id) }}">{{ job.title }}</a></li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Select a category to see jobs.</p>
+        {% endif %}
     </div>
 </div>
 

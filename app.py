@@ -360,6 +360,15 @@ def update_profile():
 
 
 
+@app.route('/category/<category>')
+def category_jobs(category):
+    jobs = Job.query.filter(Job.category.ilike(category)).all()
+    left = ["community", "for sale", "gigs", "housing", "jobs", "services"]
+    right = [
+        "ALL JOBS", "admin/office", "business", "customer service", "education",
+        "engineering", "etcetera", "finance", "food/bev/hosp", "general labor"
+    ]
+    return render_template("category_view.html", left=left, right=right, jobs=jobs, category=category)
 
 
 
@@ -389,7 +398,7 @@ def toggle_dark_mode():
 
 # ------------------ Run ------------------
 
-if __name__ == '__main__':
-    with app.app_context():
+if __name__ == '__main__':SS
+      with app.app_context():
         db.create_all()
     app.run(debug=True)

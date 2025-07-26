@@ -178,7 +178,7 @@ def post_job():
         company = request.form['company']
         location = request.form['location']
         salary = request.form['salary']
-        category = request.form['category']
+        category = request.form['category'].lower()  # ✅ Normalize to lowercase
         description = request.form['description']
         latitude = request.form.get('latitude') or None
         longitude = request.form.get('longitude') or None
@@ -205,6 +205,7 @@ def post_job():
         return redirect(url_for('home'))
 
     return render_template('post_job.html', title=_('Post a Job'))
+
 
 
 @app.route('/edit-job/<int:job_id>', methods=['GET', 'POST'])

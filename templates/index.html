@@ -232,73 +232,83 @@
     .category-layout {
         display: flex;
         flex-wrap: wrap;
-        background: #f9f9f9;
         border: 1px solid #ccc;
-        font-size: 16px;
+        background-color: #f9f9f9;
+        margin-bottom: 20px;
     }
-
-    .category-left, .category-right {
-        padding: 15px;
-        min-width: 150px;
-    }
-
+    
     .category-left {
+        flex: 0 0 200px;
+        padding: 15px;
         background: #efefef;
         border-right: 1px solid #ccc;
-        width: 30%;
     }
-
+    
     .category-right {
-        width: 70%;
+        flex: 1;
+        padding: 15px;
     }
-
+    
     .category-left a,
     .category-right a {
         display: block;
-        margin-bottom: 8px;
+        margin-bottom: 10px;
         color: #0033cc;
         text-decoration: none;
     }
-
+    
     .category-left a:hover,
     .category-right a:hover {
         text-decoration: underline;
     }
-
+    
     @media (max-width: 767px) {
         .category-layout {
             flex-direction: column;
         }
-
+    
         .category-left,
         .category-right {
             width: 100%;
+            border: none;
+            padding: 12px;
         }
-
+    
         .category-left {
-            border-right: none;
             border-bottom: 1px solid #ccc;
         }
     }
-
-    #job-map {
-        height: 400px;
-        width: 100%;
-        margin-top: 20px;
-    }
-
+    
 </style>
 
-<div class="category-layout mt-4 mb-4">
-    <div class="category-left">
-        <a href="{{ url_for('category', category_name='for sale') }}">for sale</a>
-        <a href="{{ url_for('category', category_name='gigs') }}">gigs</a>
-        <a href="{{ url_for('category', category_name='housing') }}">housing</a>
-        <a href="{{ url_for('category', category_name='jobs') }}">jobs</a>
-        <a href="{{ url_for('category', category_name='services') }}">services</a>
-        
-    </div>
-  
+<div class="category-layout">
+  <!-- Sidebar: Categories -->
+  <div class="category-left">
+    <a href="{{ url_for('category', category_name='for sale') }}">for sale</a>
+    <a href="{{ url_for('category', category_name='gigs') }}">gigs</a>
+    <a href="{{ url_for('category', category_name='housing') }}">housing</a>
+    <a href="{{ url_for('category', category_name='jobs') }}">jobs</a>
+    <a href="{{ url_for('category', category_name='services') }}">services</a>
+  </div>
+
+  <!-- Main: Jobs in selected category -->
+  <div class="category-right">
+    {% if jobs %}
+      <ul class="list-unstyled">
+        {% for job in jobs %}
+          <li class="mb-3">
+            <a href="{{ url_for('job_detail', job_id=job.id) }}" class="fw-bold text-primary">{{ job.title }}</a>
+            <div class="text-muted">{{ job.company }} — {{ job.location }}</div>
+            <div class="text-success">{{ job.salary }}</div>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>No jobs found in this category.</p>
+    {% endif %}
+  </div>
+</div>
+
 
 
 <script>

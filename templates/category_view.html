@@ -3,39 +3,63 @@
 <style>
     .category-layout {
         display: flex;
-        flex-wrap: nowrap;
+        flex-wrap: wrap;
         background: #f9f9f9;
         border: 1px solid #ccc;
         font-size: 16px;
-    }
-
-    .category-left, .category-right {
-        padding: 15px;
-        min-width: 150px;
+        margin-bottom: 30px;
     }
 
     .category-left {
+        flex: 0 0 220px;
         background: #efefef;
         border-right: 1px solid #ccc;
-        width: 30%;
+        padding: 15px;
+        max-height: 500px;
         overflow-y: auto;
     }
 
     .category-right {
-        width: 70%;
+        flex: 1;
+        padding: 20px;
     }
 
-    .category-left a,
-    .category-right a {
+    .category-left a {
         display: block;
-        margin-bottom: 8px;
+        padding: 8px 10px;
+        margin-bottom: 6px;
         color: #0033cc;
+        text-decoration: none;
+        border-radius: 4px;
+    }
+
+    .category-left a.active,
+    .category-left a:hover {
+        background: #dbe9ff;
+        font-weight: bold;
+        text-decoration: underline;
+    }
+
+    .category-right ul {
+        padding-left: 0;
+        list-style: none;
+    }
+
+    .category-right li {
+        margin-bottom: 12px;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 8px;
+    }
+
+    .category-right a {
+        color: #333;
+        font-weight: 500;
         text-decoration: none;
     }
 
-    .category-left a:hover,
     .category-right a:hover {
         text-decoration: underline;
+        color: #0033cc;
     }
 
     @media (max-width: 767px) {
@@ -43,9 +67,9 @@
             flex-direction: column;
         }
 
-        .category-left,
-        .category-right {
+        .category-left, .category-right {
             width: 100%;
+            padding: 15px;
         }
 
         .category-left {
@@ -55,10 +79,10 @@
     }
 
     .map-container {
-        margin-top: 30px;
         border: 1px solid #ccc;
         height: 300px;
         width: 100%;
+        margin-top: 30px;
     }
 
     .map-container iframe {
@@ -69,17 +93,25 @@
 </style>
 
 <div class="category-layout">
+    <!-- Category Sidebar -->
     <div class="category-left">
         {% for item in left + right %}
-            <a href="{{ url_for('category_jobs', category=item) }}">{{ item }}</a>
+            <a href="{{ url_for('category_jobs', category=item) }}"
+               class="{% if item == category %}active{% endif %}">
+                {{ item }}
+            </a>
         {% endfor %}
     </div>
+
+    <!-- Jobs Listing -->
     <div class="category-right">
         {% if jobs %}
-            <h4>{{ category|capitalize }} Jobs</h4>
+            <h4 class="mb-4">{{ category|capitalize }} Jobs</h4>
             <ul>
                 {% for job in jobs %}
-                    <li><a href="{{ url_for('job_detail', job_id=job.id) }}">{{ job.title }}</a></li>
+                    <li>
+                        <a href="{{ url_for('job_detail', job_id=job.id) }}">{{ job.title }}</a>
+                    </li>
                 {% endfor %}
             </ul>
         {% else %}
@@ -88,7 +120,7 @@
     </div>
 </div>
 
-<!-- ✅ Map preview -->
+<!-- Map Preview -->
 <div class="map-container">
     <iframe 
         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.835434509898!2d144.9537353155044!3d-37.816279742021746!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad65d43f1f50f0f%3A0x1d4e0c14c7e65ed9!2sMelbourne%20Central!5e0!3m2!1sen!2sau!4v1600000000000"

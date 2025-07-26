@@ -1,309 +1,152 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Job Portal </title>
-    <style>
-        html {
-            font-family: Arial;
-            padding: 20px;
-            background-color: #ffffff;
-            color: #000;
-            transition: background-color 0.3s, color 0.3s;
+    <title>Job Portal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- ✅ Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <script>
+        // Set dark mode before content loads to avoid white flash
+        if (localStorage.getItem('darkMode') === 'on') {
+            document.documentElement.classList.add('dark-mode');
         }
-        #job-map {
-            width: 100%;
-            height: 300px;
-            border-radius: 8px;
-            overflow: hidden;
-            margin-bottom: 30px;
+    </script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: var(--bg);
+            color: var(--text);
+            transition: background 0.3s, color 0.3s;
+        }
+
+        :root {
+            --bg: #fff;
+            --text: #000;
         }
 
         .dark-mode {
-            background-color: #121212;
-            color: #e0e0e0;
+            --bg: #121212;
+            --text: #e0e0e0;
         }
 
-        .flex-container {
-            display: flex;
-            gap: 20px;
-        }
-
-        .sidebar {
-            width: 250px;
-            border: 1px solid #ccc;
-            padding: 15px;
-            border-radius: 6px;
-            background: #f9f9f9;
-            height: fit-content;
-            transition: background 0.3s, border-color 0.3s;
-        }
-
-        .dark-mode .sidebar {
-            background: #1e1e1e;
-            border-color: #444;
-        }
-
-        .main-content {
-            flex-grow: 1;
-        }
-
-        .container {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
-        .column {
-            width: 30%;
-        }
-
-        .category {
-            font-weight: bold;
-            margin-bottom: 10px;
-            border-bottom: 1px solid #ccc;
-        }
-
-        ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        li a {
-            text-decoration: none;
-            color: blue;
-        }
-
-        .dark-mode li a {
-            color: #90caf9;
-        }
-
-        .post-job-button {
-            display: inline-block;
-            background-color: green;
-            color: white;
-            padding: 10px 16px;
-            border-radius: 5px;
-            text-decoration: none;
-            margin: 10px 0 15px 0;
-        }
-
-        .category-links a {
-            margin-right: 10px;
-            text-decoration: none;
-            color: #333;
-            border: 1px solid #ccc;
-            padding: 6px 10px;
-            border-radius: 5px;
-            background-color: #f5f5f5;
-        }
-
-        .dark-mode .category-links a {
-            color: #e0e0e0;
-            background-color: #333;
+        .dark-mode select,
+        .dark-mode input,
+        .dark-mode textarea {
+            background-color: #2c2c2c;
+            color: #fff;
             border-color: #555;
         }
 
-        form input[type="text"], form select {
-            padding: 6px 10px;
-            margin-right: 10px;
-            border-radius: 4px;
-            border: 1px solid #ccc;
+        .dark-mode a {
+            color: #80caff;
         }
 
-        form button {
-            padding: 6px 12px;
-            border-radius: 4px;
-            border: none;
-            background-color: #007bff;
-            color: white;
-            cursor: pointer;
-        }
-
-        form button:hover {
-            background-color: #0056b3;
-        }
-
-        .dropbtn {
-            background-color: #28a745;
-            color: white;
-            padding: 8px 12px;
-            font-size: 14px;
-            border: none;
-            width: 100%;
-            text-align: left;
-            border-radius: 6px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            box-sizing: border-box;
-            text-decoration: none;
-        }
-
-        /* Auth Buttons */
-        .auth-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 10px 20px;
-            margin-bottom: 10px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 16px;
-            transition: all 0.3s ease;
-            text-align: center;
-            gap: 8px;
-        }
-
-        .login-btn {
-            background-color: #007bff;
-            color: white;
-        }
-
-        .login-btn:hover {
-            background-color: #0056b3;
-            transform: scale(1.05);
-        }
-
-        .register-btn {
-            background-color: #28a745;
-            color: white;
-        }
-
-        .register-btn:hover {
-            background-color: #1e7e34;
-            transform: scale(1.05);
-        }
-
-        .auth-btn i {
-            font-size: 18px;
-        }
-
-        .dark-mode .register-btn {
-            background-color: #43a047;
-        }
-
-        .dark-mode .login-btn {
-            background-color: #1976d2;
-        }
-
-        .dark-toggle {
-            position: fixed;
-            top: 15px;
-            right: 15px;
-            background: transparent;
-            border: none;
-            font-size: 22px;
-            cursor: pointer;
-            transition: color 0.3s ease;
-            z-index: 999;
-            color: #333;
-        }
-
-        .dark-mode .dark-toggle {
-            color: #f5f5f5;
-        }
-
-        .dark-toggle:focus {
-            outline: none;
-        }
-
-        .welcome-title {
-            text-align: center;
-            font-size: 36px;
-            font-weight: bold;
-            margin-bottom: 25px;
-            background: linear-gradient(90deg, #007bff, #00c851);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: fadeIn 1.2s ease-in;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .welcome-title i {
-            margin-right: 10px;
-            color: #007bff;
-        }
-
-        .filter-button {
-            width: auto;
-            padding: 4px 10px;
-            font-size: 18px;
-            white-space: nowrap;
-        }
-
-        .filter-button:hover {
-            background-color: #0056b3;
-        }
-
-        .filter-group {
+        nav {
             display: flex;
             align-items: center;
             gap: 10px;
             flex-wrap: wrap;
-            margin: 20px 0;
+            margin-left: auto;
         }
 
-        .filter-group label {
-            margin-right: 5px;
-            font-weight: 600;
+        header {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
         }
 
-        .filter-group input[type="text"],
-        .filter-group select {
-            padding: 6px 10px;
-            border-radius: 4px;
-            border: 1px solid #ccc;
-            min-width: 150px;
-            font-size: 14px;
+        nav a {
+            margin-right: 10px;
+            text-decoration: none;
+            color: blue;
         }
 
-        .filter-group input[type="text"] {
-            max-width: 250px;
-            flex: 1;
+        nav span {
+            margin-right: 10px;
         }
 
-        @media (max-width: 600px) {
-            .filter-group {
-                flex-direction: column;
-                align-items: stretch;
+        #darkModeToggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            font-size: 1em;
+            line-height: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+        }
+
+        #darkModeToggle i {
+            color: orange;
+            font-size: 1em;
+        }
+
+        .alert {
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .alert-info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        /* ✅ Mobile-Only Responsive CSS */
+        @media (max-width: 767px) {
+            body {
+                padding: 10px;
             }
 
-            .filter-group input,
-            .filter-group select,
-            .filter-group button {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            nav {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
                 width: 100%;
             }
-        }
 
-        .container li {
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #ddd;
-            list-style-type: none;
-        }
+            nav a, nav span, #darkModeToggle, select {
+                font-size: 16px;
+                width: 100%;
+                padding: 6px 0;
+            }
 
-        .container ul li:last-child {
-            border-bottom: none;
-        }
+            h1 a {
+                font-size: 24px;
+            }
 
-        .container li a {
-            font-weight: bold;
-            color: #1a73e8;
-            text-decoration: none;
-        }
-
-        .container li a:hover {
-            text-decoration: underline;
-            color: #0c59c4;
+            .container-fluid {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
         }
     </style>
 </head>

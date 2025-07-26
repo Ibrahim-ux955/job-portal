@@ -7,7 +7,6 @@
         background: #f9f9f9;
         border: 1px solid #ccc;
         font-size: 16px;
-        margin-top: 20px;
     }
 
     .category-left, .category-right {
@@ -53,23 +52,22 @@
             border-bottom: 1px solid #ccc;
         }
     }
+
+    .map-container {
+        margin-top: 30px;
+        border: 1px solid #ccc;
+        height: 300px;
+        width: 100%;
+    }
+
+    .map-container iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+    }
 </style>
 
-<div class="container">
-    <div class="category-layout">
-        <div class="category-left">
-            {% for cat in left %}
-                <a href="#">{{ cat }}</a>
-            {% endfor %}
-        </div>
-        <div class="category-right">
-            {% for sub in right %}
-                <a href="#">{{ sub }}</a>
-            {% endfor %}
-        </div>
-    </div>
-</div>
-
+<!-- ✅ Craigslist-style category layout -->
 <div class="category-layout">
     <div class="category-left">
         <a href="#">community</a>
@@ -91,5 +89,15 @@
         <a href="#">food/bev/hosp</a>
         <a href="#">general labor</a>
     </div>
+</div>
+
+<!-- ✅ Map preview restored -->
+<div class="map-container">
+    <iframe 
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.835434509898!2d144.9537353155044!3d-37.816279742021746!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad65d43f1f50f0f%3A0x1d4e0c14c7e65ed9!2sMelbourne%20Central!5e0!3m2!1sen!2sau!4v1600000000000"
+        allowfullscreen=""
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade">
+    </iframe>
 </div>
 {% endblock %}

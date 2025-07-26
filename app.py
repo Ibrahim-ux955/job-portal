@@ -370,6 +370,11 @@ def category_jobs(category):
     ]
     return render_template("category_view.html", left=left, right=right, jobs=jobs, category=category)
 
+@app.route('/api/category/<category>')
+def api_category_jobs(category):
+    jobs = Job.query.filter_by(category=category).all()
+    job_list = [{'id': j.id, 'title': j.title} for j in jobs]
+    return jsonify({'jobs': job_list})
 
 
 

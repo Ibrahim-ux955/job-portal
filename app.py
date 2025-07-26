@@ -359,22 +359,21 @@ def update_profile():
     return redirect(url_for('profile'))
 
 
-
-
-@app.route('/category/<category>')
-def category_jobs(category):
-    jobs = Job.query.filter(Job.category.ilike(category)).all()
+@app.route('/categories')
+def categories():
     left = ["community", "for sale", "gigs", "housing", "jobs", "services"]
-    right = [
-        
-    ]
-    return render_template("category_view.html", left=left, right=right, jobs=jobs, category=category)
+    right = ["tech", "education", "creative"]  # add more as needed
+    return render_template("category.html", left=left, right=right)
+
+
+
 
 @app.route('/api/category/<category>')
 def api_category_jobs(category):
-    jobs = Job.query.filter_by(category=category).all()
+    jobs = Job.query.filter(Job.category.ilike(category)).all()
     job_list = [{'id': j.id, 'title': j.title} for j in jobs]
     return jsonify({'jobs': job_list})
+
 
 
 

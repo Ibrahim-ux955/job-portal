@@ -155,6 +155,10 @@ def category_view():
     ]
     return render_template('category_view.html', left=left, right=right)
 
+@app.route('/category/<category_name>')
+def category(category_name):
+    jobs = Job.query.filter_by(category=category_name).all()
+    return render_template('category.html', category_name=category_name, jobs=jobs)
 
 
 

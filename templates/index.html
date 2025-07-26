@@ -284,12 +284,12 @@
 
 <div class="category-layout mt-4 mb-4">
     <div class="category-left">
-        <a href="#">community</a>
-        <a href="#">for sale</a>
-        <a href="#">gigs</a>
-        <a href="#">housing</a>
-        <a href="#">jobs</a>
-        <a href="#">services</a>
+        <a href="{{ url_for('category', category_name='for sale') }}">for sale</a>
+        <a href="{{ url_for('category', category_name='gigs') }}">gigs</a>
+        <a href="{{ url_for('category', category_name='housing') }}">housing</a>
+        <a href="{{ url_for('category', category_name='jobs') }}">jobs</a>
+        <a href="{{ url_for('category', category_name='services') }}">services</a>
+        
     </div>
     <div class="category-right">
         <a href="#">ALL JOBS</a>

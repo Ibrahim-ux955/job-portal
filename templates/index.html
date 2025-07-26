@@ -228,25 +228,83 @@
 <h2>{{ _('Recent Job Locations') }}</h2>
 <div id="job-map"></div>
 
-<!-- Job Listings -->
-<div class="container">
-    {% for cat in categories %}
-        <div class="column">
-            <div class="category">{{ cat }}</div>
-            <ul>
-                {% for job in jobs if job.category == cat %}
-                    <li>
-                        <a href="{{ url_for('job_detail', job_id=job.id) }}">
-                            {{ job.title }} - {{ job.company }}
-                        </a><br>
-                        <small>{{ _('Posted:') }} {{ job.posted_time }}</small><br>
-                        <small>{{ _('Salary:') }} ${{ "{:,.2f}".format(job.salary) }}</small>
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
-    {% endfor %}
+<style>
+    .category-layout {
+        display: flex;
+        flex-wrap: wrap;
+        background: #f9f9f9;
+        border: 1px solid #ccc;
+        font-size: 16px;
+    }
+
+    .category-left, .category-right {
+        padding: 15px;
+        min-width: 150px;
+    }
+
+    .category-left {
+        background: #efefef;
+        border-right: 1px solid #ccc;
+        width: 30%;
+    }
+
+    .category-right {
+        width: 70%;
+    }
+
+    .category-left a,
+    .category-right a {
+        display: block;
+        margin-bottom: 8px;
+        color: #0033cc;
+        text-decoration: none;
+    }
+
+    .category-left a:hover,
+    .category-right a:hover {
+        text-decoration: underline;
+    }
+
+    @media (max-width: 767px) {
+        .category-layout {
+            flex-direction: column;
+        }
+
+        .category-left,
+        .category-right {
+            width: 100%;
+        }
+
+        .category-left {
+            border-right: none;
+            border-bottom: 1px solid #ccc;
+        }
+    }
+</style>
+
+<div class="category-layout mt-4 mb-4">
+    <div class="category-left">
+        <a href="#">community</a>
+        <a href="#">for sale</a>
+        <a href="#">gigs</a>
+        <a href="#">housing</a>
+        <a href="#">jobs</a>
+        <a href="#">services</a>
+    </div>
+    <div class="category-right">
+        <a href="#">ALL JOBS</a>
+        <a href="#">admin/office</a>
+        <a href="#">business</a>
+        <a href="#">customer service</a>
+        <a href="#">education</a>
+        <a href="#">engineering</a>
+        <a href="#">etcetera</a>
+        <a href="#">finance</a>
+        <a href="#">food/bev/hosp</a>
+        <a href="#">general labor</a>
+    </div>
 </div>
+
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {

@@ -2,16 +2,12 @@
 <html lang="en">
 <head>
     <title>Job Portal</title>
-    
-
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <script>
-        // Set dark mode before content loads to avoid white flash
         if (localStorage.getItem('darkMode') === 'on') {
             document.documentElement.classList.add('dark-mode');
         }
     </script>
-    
     <style>
     body {
         font-family: Arial, sans-serif;
@@ -116,7 +112,41 @@
         color: #0c5460;
         border: 1px solid #bee5eb;
     }
-</style>
+
+    /* ✅ Mobile-specific styles only */
+    @media (max-width: 767px) {
+        body {
+            padding: 10px;
+        }
+
+        header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        nav {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 5px;
+            width: 100%;
+        }
+
+        nav a, nav span, #darkModeToggle, select {
+            font-size: 16px;
+            width: 100%;
+            padding: 6px 0;
+        }
+
+        h1 a {
+            font-size: 24px;
+        }
+
+        .container-fluid {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+    }
+    </style>
 
 
 </head>

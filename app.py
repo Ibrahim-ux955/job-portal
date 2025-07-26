@@ -146,6 +146,14 @@ def login():
 
     return render_template('login.html', next=next_page)
 
+@app.route('/categories')
+def category_view():
+    left = ["community", "for sale", "gigs", "housing", "jobs", "services"]
+    right = [
+        "ALL JOBS", "admin/office", "business", "customer service", "education",
+        "engineering", "etcetera", "finance", "food/bev/hosp", "general labor"
+    ]
+    return render_template('category_view.html', left=left, right=right)
 
 
 

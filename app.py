@@ -10,8 +10,6 @@ from extensions import db, babel, mail  # ✅ also import mail
 from models import User, Job, Application
 from urllib.parse import urlparse, urljoin
 from flask_mail import Message  # Make sure this import is at the top
-from flask_wtf.csrf import CSRFProtect  # ✅ This is correct
-
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret123'
@@ -106,7 +104,6 @@ def register():
         new_user = User(email=email, username=username, password=hashed_password, role=role)
         db.session.add(new_user)
         db.session.commit()
-        session["user_id"] = user.id
 
         flash('Registration successful. Please log in.', 'success')
         return redirect(url_for('login'))
@@ -134,7 +131,6 @@ def login():
         user = User.query.filter(
             (User.username == identifier) | (User.email == identifier)
         ).first()
-        session["user_id"] = user.id
 
         if user and check_password_hash(user.password, password):
             session['user_id'] = user.id
@@ -398,19 +394,6 @@ def confirm_logout():
 
     return render_template('confirm_logout.html')
 
-@app.route("/save_location", methods=["POST"])
-def save_location():
-    if "user_id" not in session:
-        return jsonify({"error": "Not logged in"}), 401
-
-    data = request.get_json()
-    user = User.query.get(session["user_id"])
-    if user:
-        user.latitude = data.get("latitude")
-        user.longitude = data.get("longitude")
-        db.session.commit()
-        return jsonify({"success": True})
-    return jsonify({"error": "User not found"}), 404
 
 
 

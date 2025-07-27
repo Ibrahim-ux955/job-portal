@@ -38,32 +38,7 @@
         </button>
     </form>
 
-    <script>
-    function sendLocationToServer(lat, lng) {
-        fetch("/save_location", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ latitude: lat, longitude: lng })
-        });
-    }
-
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-            position => {
-                sendLocationToServer(position.coords.latitude, position.coords.longitude);
-            },
-            error => {
-                console.warn("Location error:", error.message);
-                // Optional fallback: use IP-based geolocation or default
-            }
-        );
-    } else {
-        console.warn("Geolocation not supported by this browser.");
-    }
-</script>
-
+    
     <!-- Bottom Link -->
     <p style="margin-top: 20px;">{{ _('Already have an account?') }} <a href="{{ url_for('login') }}">{{ _('Log in here') }}</a>.</p>
 </div>

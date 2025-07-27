@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <h3>{{ _('Confirm Logout') }}</h3>
+    <form method="POST">
+        <label>{{ _('Enter your password to logout:') }}</label><br>
+        <input type="password" name="password" required><br><br>
+        <button type="submit">{{ _('Logout') }}</button>
+        <a href="{{ url_for('home') }}">{{ _('Cancel') }}</a>
+    </form>
+</div>
+{% endblock %}

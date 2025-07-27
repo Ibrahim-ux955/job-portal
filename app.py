@@ -375,6 +375,26 @@ def toggle_dark_mode():
     db.session.commit()
     return jsonify({'status': 'ok'})
 
+@app.route('/confirm_logout', methods=['GET', 'POST'])
+def confirm_logout():
+    if 'user_id' not in session:
+        flash(_('You must be logged in.'), 'warning')
+        return redirect(url_for('login'))
+
+    if request.method == 'POST':
+        password = request.form['password']
+        user = User.query.get(session['user_id'])
+
+        if user and check_password_hash(user.password, password):
+            session.clear()
+            flash(_('Logged out successfully.'), 'info')
+            return redirect(url_for('home'))
+        else:
+            flash(_('Incorrect password.'), 'danger')
+
+    return render_template('confirm_logout.html')
+
+
 # ------------------ Run ------------------
 
 if __name__ == '__main__':

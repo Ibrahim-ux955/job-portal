@@ -133,7 +133,7 @@ header {
                 <span>Welcome, {{ user.username }}!</span>        
                 <a href="{{ url_for('profile') }}">{{ _('My Profile')}} </a>
                 <a href="{{ url_for('post_job') }}">{{ _('Post Job')}} </a>
-                <a href="{{ url_for('logout') }}">{{ _('Logout')}} </a>
+                <a href="{{ url_for('confirm_logout') }}">{{ _('Logout') }}</a>
             {% else %}
                 {% if request.endpoint != 'register' %}
                     <a href="{{ url_for('register') }}">{{ _('Register') }}</a>

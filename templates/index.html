@@ -409,6 +409,22 @@
     document.addEventListener("DOMContentLoaded", function () {
         var map = L.map("job-map");
 
+        // Ask for user's location and show on map
+map.locate({ setView: true, maxZoom: 16 });
+
+function onLocationFound(e) {
+    const userMarker = L.marker(e.latlng).addTo(map);
+    userMarker.bindPopup("You are here!").openPopup();
+}
+
+function onLocationError(e) {
+    alert("Location access denied or unavailable: " + e.message);
+}
+
+map.on('locationfound', onLocationFound);
+map.on('locationerror', onLocationError);
+
+
         L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
             attribution: 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors',
         }).addTo(map);

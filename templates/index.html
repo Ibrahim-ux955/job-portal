@@ -408,11 +408,33 @@
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         var map = L.map("job-map");
-    
+
         L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
             attribution: 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors',
         }).addTo(map);
-    
+
+        // ✅ Locate user
+        map.locate({
+    setView: true,
+    maxZoom: 15,
+    watch: false,
+    enableHighAccuracy: true
+});
+
+
+        map.on("locationfound", function (e) {
+            const radius = e.accuracy;
+
+            L.marker(e.latlng).addTo(map)
+                .bindPopup("You are here").openPopup();
+
+            L.circle(e.latlng, radius).addTo(map);
+        });
+
+        map.on("locationerror", function (e) {
+            console.warn("Geolocation failed or was denied:", e.message);
+        });
+
         const allJobMarkers = [
             {% for job in jobs if job.latitude and job.longitude %}
                 {
@@ -426,44 +448,43 @@
                 },
             {% endfor %}
         ];
-    
+
         const markers = L.markerClusterGroup();
         map.addLayer(markers);
-    
+
         function renderMarkers(category = "", location = "") {
             markers.clearLayers();
-    
+
             const filtered = allJobMarkers.filter(job =>
                 (category === "" || job.category === category) &&
                 (location === "" || job.location === location)
             );
-    
+
             filtered.forEach(job => {
                 const marker = L.marker([job.lat, job.lng])
                     .bindPopup(`<strong>${job.title}</strong><br>${job.company}<br><a href="${job.url}">View Job</a>`);
                 markers.addLayer(marker);
             });
-    
+
             if (filtered.length > 0) {
                 map.fitBounds(markers.getBounds().pad(0.2));
             } else {
                 map.setView([20, 0], 2);
             }
         }
-    
-        // Initial render
+
         renderMarkers();
-    
-        // Listen for filter changes
+
         document.getElementById("categoryFilter").addEventListener("change", function () {
             renderMarkers(this.value, document.getElementById("locationFilter").value);
         });
-    
+
         document.getElementById("locationFilter").addEventListener("change", function () {
             renderMarkers(document.getElementById("categoryFilter").value, this.value);
         });
     });
 </script>
+
 
 <script>
     const toggleBtn = document.getElementById('darkModeToggle');

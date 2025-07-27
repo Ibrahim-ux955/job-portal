@@ -410,7 +410,32 @@
         var map = L.map("job-map");
 
         // Ask for user's location and show on map
-map.locate({ setView: true, maxZoom: 16 });
+// Ask for user's location
+map.locate({
+    setView: true,
+    maxZoom: 16,
+    enableHighAccuracy: true
+});
+
+map.on("locationfound", function (e) {
+    const radius = e.accuracy;
+
+    // Drop marker and accuracy circle
+    L.marker(e.latlng).addTo(map)
+        .bindPopup("You are here!").openPopup();
+
+    L.circle(e.latlng, {
+        radius: radius,
+        color: '#136AEC',
+        fillColor: '#136AEC',
+        fillOpacity: 0.2
+    }).addTo(map);
+});
+
+map.on("locationerror", function (e) {
+    console.warn("Geolocation failed or denied:", e.message);
+    alert("Unable to access your location: " + e.message);
+});
 
 function onLocationFound(e) {
     const userMarker = L.marker(e.latlng).addTo(map);
@@ -429,14 +454,7 @@ map.on('locationerror', onLocationError);
             attribution: 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors',
         }).addTo(map);
 
-        // ✅ Locate user
-        map.locate({
-    setView: true,
-    maxZoom: 15,
-    watch: false,
-    enableHighAccuracy: true
-});
-
+      
 
         map.on("locationfound", function (e) {
             const radius = e.accuracy;

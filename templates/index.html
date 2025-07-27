@@ -409,65 +409,24 @@
     document.addEventListener("DOMContentLoaded", function () {
         var map = L.map("job-map");
 
-        // Ask for user's location and show on map
-// Ask for user's location
-map.locate({
-    setView: true,
-    maxZoom: 16,
-    enableHighAccuracy: true
-});
-
-map.on("locationfound", function (e) {
-    const radius = e.accuracy;
-
-    // Drop marker and accuracy circle
-    L.marker(e.latlng).addTo(map)
-        .bindPopup("You are here!").openPopup();
-
-    L.circle(e.latlng, {
-        radius: radius,
-        color: '#136AEC',
-        fillColor: '#136AEC',
-        fillOpacity: 0.2
-    }).addTo(map);
-});
-
-map.on("locationerror", function (e) {
-    console.warn("Geolocation failed or denied:", e.message);
-    alert("Unable to access your location: " + e.message);
-});
-
-function onLocationFound(e) {
-    const userMarker = L.marker(e.latlng).addTo(map);
-    userMarker.bindPopup("You are here!").openPopup();
-}
-
-function onLocationError(e) {
-    alert("Location access denied or unavailable: " + e.message);
-}
-
-map.on('locationfound', onLocationFound);
-map.on('locationerror', onLocationError);
-
-
         L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
             attribution: 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors',
         }).addTo(map);
 
-      
-
-        map.on("locationfound", function (e) {
-            const radius = e.accuracy;
-
-            L.marker(e.latlng).addTo(map)
-                .bindPopup("You are here").openPopup();
-
-            L.circle(e.latlng, radius).addTo(map);
-        });
-
-        map.on("locationerror", function (e) {
-            console.warn("Geolocation failed or was denied:", e.message);
-        });
+        // Haversine distance function
+        function getDistance(lat1, lon1, lat2, lon2) {
+            function toRad(x) {
+                return x * Math.PI / 180;
+            }
+            const R = 6371; // Earth radius in km
+            const dLat = toRad(lat2 - lat1);
+            const dLon = toRad(lon2 - lon1);
+            const a = Math.sin(dLat / 2) ** 2 +
+                      Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+                      Math.sin(dLon / 2) ** 2;
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            return R * c;
+        }
 
         const allJobMarkers = [
             {% for job in jobs if job.latitude and job.longitude %}
@@ -486,12 +445,18 @@ map.on('locationerror', onLocationError);
         const markers = L.markerClusterGroup();
         map.addLayer(markers);
 
+        let userLat = null;
+        let userLng = null;
+
         function renderMarkers(category = "", location = "") {
             markers.clearLayers();
 
+            const maxDistanceKm = 50;
+
             const filtered = allJobMarkers.filter(job =>
                 (category === "" || job.category === category) &&
-                (location === "" || job.location === location)
+                (location === "" || job.location === location) &&
+                (userLat === null || getDistance(userLat, userLng, job.lat, job.lng) <= maxDistanceKm)
             );
 
             filtered.forEach(job => {
@@ -502,19 +467,52 @@ map.on('locationerror', onLocationError);
 
             if (filtered.length > 0) {
                 map.fitBounds(markers.getBounds().pad(0.2));
+            } else if (userLat && userLng) {
+                map.setView([userLat, userLng], 12);
+                alert("No jobs found within 50 km of your location.");
             } else {
                 map.setView([20, 0], 2);
             }
         }
 
-        renderMarkers();
-
+        // Event listeners for dropdown filters
         document.getElementById("categoryFilter").addEventListener("change", function () {
             renderMarkers(this.value, document.getElementById("locationFilter").value);
         });
 
         document.getElementById("locationFilter").addEventListener("change", function () {
             renderMarkers(document.getElementById("categoryFilter").value, this.value);
+        });
+
+        // Geolocation detection
+        map.locate({
+            setView: true,
+            maxZoom: 15,
+            watch: false,
+            enableHighAccuracy: true
+        });
+
+        map.on("locationfound", function (e) {
+            userLat = e.latitude;
+            userLng = e.longitude;
+
+            L.marker(e.latlng).addTo(map)
+                .bindPopup("You are here!").openPopup();
+
+            L.circle(e.latlng, {
+                radius: e.accuracy,
+                color: '#136AEC',
+                fillColor: '#136AEC',
+                fillOpacity: 0.2
+            }).addTo(map);
+
+            renderMarkers(); // Show nearby jobs
+        });
+
+        map.on("locationerror", function (e) {
+            console.warn("Geolocation failed or denied:", e.message);
+            alert("Unable to access your location: " + e.message);
+            renderMarkers(); // Show all jobs without distance filter
         });
     });
 </script>

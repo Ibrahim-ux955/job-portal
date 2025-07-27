@@ -14,7 +14,7 @@
         <label for="identifier" style="font-weight: bold;">{{ _('Email or Username') }}</label>
         <input type="text" name="identifier" id="identifier" required
                style="padding: 10px; border-radius: 5px; border: 1px solid #ccc;">
-    
+        
         <label for="password" style="font-weight: bold;">{{ _('Password') }}</label>
         <input type="password" name="password" id="password" required
                style="padding: 10px; border-radius: 5px; border: 1px solid #ccc;">
@@ -34,7 +34,32 @@
         </div>
     </form>
     
-
+    <script>
+        function sendLocationToServer(lat, lng) {
+            fetch("/save_location", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ latitude: lat, longitude: lng })
+            });
+        }
+    
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                position => {
+                    sendLocationToServer(position.coords.latitude, position.coords.longitude);
+                },
+                error => {
+                    console.warn("Location error:", error.message);
+                    // Optional fallback: use IP-based geolocation or default
+                }
+            );
+        } else {
+            console.warn("Geolocation not supported by this browser.");
+        }
+    </script>
+    
     <!-- Extra Links -->
     <p style="margin-top: 20px;">
         {{ _('Don\'t have an account?') }}

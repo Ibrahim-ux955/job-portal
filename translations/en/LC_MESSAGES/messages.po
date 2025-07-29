@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-07-25 09:40+0000\n"
+"POT-Creation-Date: 2025-07-29 14:41+0000\n"
 "PO-Revision-Date: 2025-07-22 09:57+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -18,20 +18,40 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.17.0\n"
 
-#: app.py:158
+#: app.py:138
 msgid "Login successful!"
 msgstr ""
 
-#: app.py:164
+#: app.py:144
 msgid "Invalid username/email or password."
 msgstr ""
 
-#: app.py:176
+#: app.py:156
 msgid "Logged out."
 msgstr ""
 
-#: app.py:215 templates/index.html:332 templates/post_job.html:82
+#: app.py:195 templates/index.html:355 templates/post_job.html:82
 msgid "Post a Job"
+msgstr ""
+
+#: app.py:297
+msgid "Application submitted, but email failed to send."
+msgstr ""
+
+#: app.py:299
+msgid "Application submitted successfully!"
+msgstr ""
+
+#: app.py:378
+msgid "You must be logged in."
+msgstr ""
+
+#: app.py:387
+msgid "Logged out successfully."
+msgstr ""
+
+#: app.py:390
+msgid "Incorrect password."
 msgstr ""
 
 #: templates/apply.html:4 templates/apply.html:65
@@ -66,7 +86,8 @@ msgstr ""
 msgid "Post Job"
 msgstr ""
 
-#: templates/base.html:136 templates/profile.html:95
+#: templates/base.html:136 templates/confirm_logout.html:8
+#: templates/profile.html:95
 msgid "Logout"
 msgstr ""
 
@@ -75,39 +96,51 @@ msgstr ""
 msgid "Register"
 msgstr ""
 
-#: templates/index.html:323
+#: templates/confirm_logout.html:4
+msgid "Confirm Logout"
+msgstr ""
+
+#: templates/confirm_logout.html:6
+msgid "Enter your password to logout:"
+msgstr ""
+
+#: templates/confirm_logout.html:9
+msgid "Cancel"
+msgstr ""
+
+#: templates/index.html:346
 msgid "Welcome to Job Portal"
 msgstr ""
 
-#: templates/index.html:338
+#: templates/index.html:361
 msgid "Search jobs..."
 msgstr ""
 
-#: templates/index.html:340 templates/job_detail.html:116
+#: templates/index.html:363 templates/job_detail.html:116
 msgid "Category:"
 msgstr ""
 
-#: templates/index.html:342 templates/index.html:350
+#: templates/index.html:365 templates/index.html:373
 msgid "All"
 msgstr ""
 
-#: templates/index.html:348
+#: templates/index.html:371
 msgid "City:"
 msgstr ""
 
-#: templates/index.html:357
+#: templates/index.html:380
 msgid "Filter"
 msgstr ""
 
-#: templates/index.html:362
+#: templates/index.html:385
 msgid "Recent Job Locations"
 msgstr ""
 
-#: templates/index.html:376
+#: templates/index.html:399
 msgid "Posted:"
 msgstr ""
 
-#: templates/index.html:377 templates/job_detail.html:115
+#: templates/index.html:400 templates/job_detail.html:115
 msgid "Salary:"
 msgstr ""
 
@@ -291,11 +324,11 @@ msgid "You haven't posted any jobs yet."
 msgstr ""
 
 #: templates/register.html:8
-msgid "Join Job Portal Ghana"
+msgid "Join Job Portal"
 msgstr ""
 
 #: templates/register.html:9
-msgid "Discover and apply for top job opportunities across Ghana."
+msgid "Discover and apply for top job opportunities across the World."
 msgstr ""
 
 #: templates/register.html:12
@@ -346,11 +379,11 @@ msgstr ""
 msgid "Employer"
 msgstr ""
 
-#: templates/register.html:42
+#: templates/register.html:43
 msgid "Already have an account?"
 msgstr ""
 
-#: templates/register.html:42
+#: templates/register.html:43
 msgid "Log in here"
 msgstr ""
 
@@ -388,5 +421,11 @@ msgstr ""
 #~ msgstr ""
 
 #~ msgid "Salary:"
+#~ msgstr ""
+
+#~ msgid "Join Job Portal Ghana"
+#~ msgstr ""
+
+#~ msgid "Discover and apply for top job opportunities across Ghana."
 #~ msgstr ""
 

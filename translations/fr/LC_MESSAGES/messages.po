@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-07-25 09:40+0000\n"
+"POT-Creation-Date: 2025-07-29 14:41+0000\n"
 "PO-Revision-Date: 2025-07-24 13:37+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -18,21 +18,43 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.17.0\n"
 
-#: app.py:158
+#: app.py:138
 msgid "Login successful!"
 msgstr "Connexion réussie !"
 
-#: app.py:164
+#: app.py:144
 msgid "Invalid username/email or password."
 msgstr "Nom d'utilisateur/email ou mot de passe invalide."
 
-#: app.py:176
+#: app.py:156
 msgid "Logged out."
 msgstr "Déconnecté."
 
-#: app.py:215 templates/index.html:332 templates/post_job.html:82
+#: app.py:195 templates/index.html:355 templates/post_job.html:82
 msgid "Post a Job"
 msgstr "Publier une offre"
+
+#: app.py:297
+msgid "Application submitted, but email failed to send."
+msgstr ""
+
+#: app.py:299
+msgid "Application submitted successfully!"
+msgstr ""
+
+#: app.py:378
+msgid "You must be logged in."
+msgstr ""
+
+#: app.py:387
+#, fuzzy
+msgid "Logged out successfully."
+msgstr "Connexion réussie !"
+
+#: app.py:390
+#, fuzzy
+msgid "Incorrect password."
+msgstr "Mot de passe oublié ?"
 
 #: templates/apply.html:4 templates/apply.html:65
 msgid "Apply for"
@@ -66,47 +88,62 @@ msgstr "Mon profil"
 msgid "Post Job"
 msgstr "Publier une offre"
 
-#: templates/base.html:136 templates/profile.html:95
+#: templates/base.html:136 templates/confirm_logout.html:8
+#: templates/profile.html:95
 msgid "Logout"
 msgstr "Déconnexion"
 
-#: templates/base.html:139 templates/post_job.html:89 templates/register.html:23 templates/register.html:37
+#: templates/base.html:139 templates/post_job.html:89
+#: templates/register.html:23 templates/register.html:37
 msgid "Register"
 msgstr "S'inscrire"
 
-#: templates/index.html:323
+#: templates/confirm_logout.html:4
+#, fuzzy
+msgid "Confirm Logout"
+msgstr "Déconnexion"
+
+#: templates/confirm_logout.html:6
+msgid "Enter your password to logout:"
+msgstr ""
+
+#: templates/confirm_logout.html:9
+msgid "Cancel"
+msgstr ""
+
+#: templates/index.html:346
 msgid "Welcome to Job Portal"
 msgstr "Bienvenue sur le portail d'emploi"
 
-#: templates/index.html:338
+#: templates/index.html:361
 msgid "Search jobs..."
 msgstr "Rechercher des offres..."
 
-#: templates/index.html:340 templates/job_detail.html:116
+#: templates/index.html:363 templates/job_detail.html:116
 msgid "Category:"
 msgstr "Catégorie :"
 
-#: templates/index.html:342 templates/index.html:350
+#: templates/index.html:365 templates/index.html:373
 msgid "All"
 msgstr "Tous"
 
-#: templates/index.html:348
+#: templates/index.html:371
 msgid "City:"
 msgstr "Ville :"
 
-#: templates/index.html:357
+#: templates/index.html:380
 msgid "Filter"
 msgstr "Filtrer"
 
-#: templates/index.html:362
+#: templates/index.html:385
 msgid "Recent Job Locations"
 msgstr "Lieux de travail récents"
 
-#: templates/index.html:376
+#: templates/index.html:399
 msgid "Posted:"
 msgstr "Publié :"
 
-#: templates/index.html:377 templates/job_detail.html:115
+#: templates/index.html:400 templates/job_detail.html:115
 msgid "Salary:"
 msgstr "Salaire :"
 
@@ -190,7 +227,8 @@ msgstr "Titre du poste"
 msgid "Company"
 msgstr "Entreprise"
 
-#: templates/post_job.html:99 templates/profile.html:90 templates/profile.html:105
+#: templates/post_job.html:99 templates/profile.html:90
+#: templates/profile.html:105
 msgid "Location"
 msgstr "Localisation"
 
@@ -246,11 +284,13 @@ msgstr "Profil"
 msgid "Hello"
 msgstr "Bonjour"
 
-#: templates/profile.html:88 templates/profile.html:99 templates/register.html:32
+#: templates/profile.html:88 templates/profile.html:99
+#: templates/register.html:32
 msgid "Username"
 msgstr "Nom d'utilisateur"
 
-#: templates/profile.html:89 templates/profile.html:102 templates/register.html:33
+#: templates/profile.html:89 templates/profile.html:102
+#: templates/register.html:33
 msgid "Email"
 msgstr "E-mail"
 
@@ -289,7 +329,6 @@ msgstr "Vous n'avez encore publié aucune offre."
 #: templates/register.html:8
 msgid "Join Job Portal"
 msgstr "Rejoignez le Portail d'emploi"
-
 
 #: templates/register.html:9
 msgid "Discover and apply for top job opportunities across the World."
@@ -343,10 +382,11 @@ msgstr "Chercheur d'emploi"
 msgid "Employer"
 msgstr "Employeur"
 
-#: templates/register.html:42
+#: templates/register.html:43
 msgid "Already have an account?"
 msgstr "Vous avez déjà un compte ?"
 
-#: templates/register.html:42
+#: templates/register.html:43
 msgid "Log in here"
 msgstr "Connectez-vous ici"
+

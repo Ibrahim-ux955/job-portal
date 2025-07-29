@@ -234,9 +234,6 @@ def job_detail(job_id):
     return render_template('job_detail.html', job=job, user=user)
 
 
-
-
-
 @app.route('/apply/<int:job_id>', methods=['GET', 'POST'])
 def apply_job(job_id):
     job = Job.query.get_or_404(job_id)

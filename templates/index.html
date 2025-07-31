@@ -1,555 +1,611 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Job Portal </title>
+  <head>
+    <title>Job Portal</title>
     <style>
-        html {
-            font-family: Arial;
-            padding: 20px;
-            background-color: #ffffff;
-            color: #000;
-            transition: background-color 0.3s, color 0.3s;
-        }
-        #job-map {
-    width: 100%;
-    height: 300px;
-    border-radius: 8px;
-    overflow: hidden;
-    margin-bottom: 30px;
-        }
-
-
-        .dark-mode {
-            background-color: #121212;
-            color: #e0e0e0;
-        }
-
-        .flex-container {
-            display: flex;
-            gap: 20px;
-        }
-
-        .sidebar {
-            width: 250px;
-            border: 1px solid #ccc;
-            padding: 15px;
-            border-radius: 6px;
-            background: #f9f9f9;
-            height: fit-content;
-            transition: background 0.3s, border-color 0.3s;
-        }
-
-        .dark-mode .sidebar {
-            background: #1e1e1e;
-            border-color: #444;
-        }
-
-        .main-content {
-            flex-grow: 1;
-        }
-
-        .container {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
-        .column {
-            width: 30%;
-        }
-
-        .category {
-            font-weight: bold;
-            margin-bottom: 10px;
-            border-bottom: 1px solid #ccc;
-        }
-
-        ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        li a {
-            text-decoration: none;
-            color: blue;
-        }
-
-        .dark-mode li a {
-            color: #90caf9;
-        }
-
-        .post-job-button {
-            display: inline-block;
-            background-color: green;
-            color: white;
-            padding: 10px 16px;
-            border-radius: 5px;
-            text-decoration: none;
-            margin: 10px 0 15px 0;
-        }
-
-        .category-links a {
-            margin-right: 10px;
-            text-decoration: none;
-            color: #333;
-            border: 1px solid #ccc;
-            padding: 6px 10px;
-            border-radius: 5px;
-            background-color: #f5f5f5;
-        }
-
-        .dark-mode .category-links a {
-            color: #e0e0e0;
-            background-color: #333;
-            border-color: #555;
-        }
-
-        form input[type="text"], form select {
-            padding: 6px 10px;
-            margin-right: 10px;
-            border-radius: 4px;
-            border: 1px solid #ccc;
-        }
-
-        form button {
-            padding: 6px 12px;
-            border-radius: 4px;
-            border: none;
-            background-color: #007bff;
-            color: white;
-            cursor: pointer;
-        }
-
-        form button:hover {
-            background-color: #0056b3;
-        }
-
-        .dropbtn {
-            background-color: #28a745;
-            color: white;
-            padding: 8px 12px;
-            font-size: 14px;
-            border: none;
-            width: 100%;
-            text-align: left;
-            border-radius: 6px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            box-sizing: border-box;
-            text-decoration: none;
-        }
-
-        /* Auth Buttons */
-        .auth-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 10px 20px;
-            margin-bottom: 10px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 16px;
-            transition: all 0.3s ease;
-            text-align: center;
-            gap: 8px;
-        }
-
-        .login-btn {
-            background-color: #007bff;
-            color: white;
-        }
-
-        .login-btn:hover {
-            background-color: #0056b3;
-            transform: scale(1.05);
-        }
-
-        .register-btn {
-            background-color: #28a745;
-            color: white;
-        }
-
-        .register-btn:hover {
-            background-color: #1e7e34;
-            transform: scale(1.05);
-        }
-
-        .auth-btn i {
-            font-size: 18px;
-        }
-
-        /* Dark mode auth buttons */
-        .dark-mode .register-btn {
-            background-color: #43a047;
-        }
-
-        .dark-mode .login-btn {
-            background-color: #1976d2;
-        }
-
-        /* Dark mode toggle button */
-        .dark-toggle {
-            position: fixed;
-            top: 15px;
-            right: 15px;
-            background: transparent;
-            border: none;
-            font-size: 22px;
-            cursor: pointer;
-            transition: color 0.3s ease;
-            z-index: 999;
-            color: #333;
-        }
-
-        .dark-mode .dark-toggle {
-            color: #f5f5f5;
-        }
-
-        .dark-toggle:focus {
-            outline: none;
-        }
-        
-        .welcome-title {
-    text-align: center;
-    font-size: 36px;
-    font-weight: bold;
-    margin-bottom: 25px;
-    background: linear-gradient(90deg, #007bff, #00c851);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: fadeIn 1.2s ease-in;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.welcome-title i {
-    margin-right: 10px;
-    color: #007bff;
-}
-.filter-button {
-    width: auto;
-    padding: 4px 10px;
-    font-size: 18px;
-    white-space: nowrap;
-}
-
-
-.filter-button:hover {
-    background-color: #0056b3;
-}
-
-.filter-group {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
-    margin: 20px 0;
-}
-
-.filter-group label {
-    margin-right: 5px;
-    font-weight: 600;
-}
-
-.filter-group input[type="text"],
-.filter-group select {
-    padding: 6px 10px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    min-width: 150px;
-    font-size: 14px;
-}
-
-.filter-group input[type="text"] {
-    max-width: 250px;
-    flex: 1;
-}
-
-@media (max-width: 600px) {
-    .filter-group {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .filter-group input,
-    .filter-group select,
-    .filter-group button {
+      html {
+        font-family: Arial;
+        padding: 20px;
+        background-color: #ffffff;
+        color: #000;
+        transition: background-color 0.3s, color 0.3s;
+      }
+      #job-map {
         width: 100%;
-    }
-}
+        height: 300px;
+        border-radius: 8px;
+        overflow: hidden;
+        margin-bottom: 30px;
+      }
 
-.container li {
-    margin-bottom: 15px;  /* space between job posts */
-    padding-bottom: 10px;
-    border-bottom: 1px solid #ddd;
-    list-style-type: none;
-}
+      .dark-mode {
+        background-color: #121212;
+        color: #e0e0e0;
+      }
 
-.container ul li:last-child {
-    border-bottom: none;
-}
+      .flex-container {
+        display: flex;
+        gap: 20px;
+      }
 
-.container li a {
-    font-weight: bold;
-    color: #1a73e8; /* Google blue */
-    text-decoration: none;
-}
+      .sidebar {
+        width: 250px;
+        border: 1px solid #ccc;
+        padding: 15px;
+        border-radius: 6px;
+        background: #f9f9f9;
+        height: fit-content;
+        transition: background 0.3s, border-color 0.3s;
+      }
 
-.container li a:hover {
-    text-decoration: underline;
-    color: #0c59c4;
-}
+      .dark-mode .sidebar {
+        background: #1e1e1e;
+        border-color: #444;
+      }
 
+      .main-content {
+        flex-grow: 1;
+      }
 
+      .container {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
 
-    </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+      .column {
+        width: 30%;
+      }
 
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+      .category {
+        font-weight: bold;
+        margin-bottom: 10px;
+        border-bottom: 1px solid #ccc;
+      }
 
-<!-- MarkerCluster plugin -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.css" />
-<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css" />
-<script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
+      ul {
+        list-style: none;
+        padding: 0;
+      }
 
-{% extends "base.html" %}
+      li a {
+        text-decoration: none;
+        color: blue;
+      }
 
-{% block head %}
-    <script>
-        // Apply dark mode before DOM renders
-        if (localStorage.getItem('darkMode') === 'on') {
-            document.documentElement.classList.add('dark-mode');
+      .dark-mode li a {
+        color: #90caf9;
+      }
+
+      .post-job-button {
+        display: inline-block;
+        background-color: green;
+        color: white;
+        padding: 10px 16px;
+        border-radius: 5px;
+        text-decoration: none;
+        margin: 10px 0 15px 0;
+      }
+
+      .category-links a {
+        margin-right: 10px;
+        text-decoration: none;
+        color: #333;
+        border: 1px solid #ccc;
+        padding: 6px 10px;
+        border-radius: 5px;
+        background-color: #f5f5f5;
+      }
+
+      .dark-mode .category-links a {
+        color: #e0e0e0;
+        background-color: #333;
+        border-color: #555;
+      }
+
+      form input[type="text"],
+      form select {
+        padding: 6px 10px;
+        margin-right: 10px;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+      }
+
+      form button {
+        padding: 6px 12px;
+        border-radius: 4px;
+        border: none;
+        background-color: #007bff;
+        color: white;
+        cursor: pointer;
+      }
+
+      form button:hover {
+        background-color: #0056b3;
+      }
+
+      .dropbtn {
+        background-color: #28a745;
+        color: white;
+        padding: 8px 12px;
+        font-size: 14px;
+        border: none;
+        width: 100%;
+        text-align: left;
+        border-radius: 6px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        box-sizing: border-box;
+        text-decoration: none;
+      }
+
+      /* Auth Buttons */
+      .auth-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px 20px;
+        margin-bottom: 10px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        text-align: center;
+        gap: 8px;
+      }
+
+      .login-btn {
+        background-color: #007bff;
+        color: white;
+      }
+
+      .login-btn:hover {
+        background-color: #0056b3;
+        transform: scale(1.05);
+      }
+
+      .register-btn {
+        background-color: #28a745;
+        color: white;
+      }
+
+      .register-btn:hover {
+        background-color: #1e7e34;
+        transform: scale(1.05);
+      }
+
+      .auth-btn i {
+        font-size: 18px;
+      }
+
+      /* Dark mode auth buttons */
+      .dark-mode .register-btn {
+        background-color: #43a047;
+      }
+
+      .dark-mode .login-btn {
+        background-color: #1976d2;
+      }
+
+      /* Dark mode toggle button */
+      .dark-toggle {
+        position: fixed;
+        top: 15px;
+        right: 15px;
+        background: transparent;
+        border: none;
+        font-size: 22px;
+        cursor: pointer;
+        transition: color 0.3s ease;
+        z-index: 999;
+        color: #333;
+      }
+
+      .dark-mode .dark-toggle {
+        color: #f5f5f5;
+      }
+
+      .dark-toggle:focus {
+        outline: none;
+      }
+
+      .welcome-title {
+        text-align: center;
+        font-size: 36px;
+        font-weight: bold;
+        margin-bottom: 25px;
+        background: linear-gradient(90deg, #007bff, #00c851);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: fadeIn 1.2s ease-in;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-10px);
         }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .welcome-title i {
+        margin-right: 10px;
+        color: #007bff;
+      }
+      .filter-button {
+        width: auto;
+        padding: 4px 10px;
+        font-size: 18px;
+        white-space: nowrap;
+      }
+
+      .filter-button:hover {
+        background-color: #0056b3;
+      }
+
+      .filter-group {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin: 20px 0;
+      }
+
+      .filter-group label {
+        margin-right: 5px;
+        font-weight: 600;
+      }
+
+      .filter-group input[type="text"],
+      .filter-group select {
+        padding: 6px 10px;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+        min-width: 150px;
+        font-size: 14px;
+      }
+
+      .filter-group input[type="text"] {
+        max-width: 250px;
+        flex: 1;
+      }
+
+      @media (max-width: 600px) {
+        .filter-group {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .filter-group input,
+        .filter-group select,
+        .filter-group button {
+          width: 100%;
+        }
+      }
+
+      .container li {
+        margin-bottom: 15px; /* space between job posts */
+        padding-bottom: 10px;
+        border-bottom: 1px solid #ddd;
+        list-style-type: none;
+      }
+
+      .container ul li:last-child {
+        border-bottom: none;
+      }
+
+      .container li a {
+        font-weight: bold;
+        color: #1a73e8; /* Google blue */
+        text-decoration: none;
+      }
+
+      .container li a:hover {
+        text-decoration: underline;
+        color: #0c59c4;
+      }
+
+      .leaflet-popup-content {
+        font-size: 14px;
+        line-height: 1.4;
+      }
+
+      @media (max-width: 600px) {
+        .leaflet-popup-content {
+          font-size: 16px;
+        }
+
+        #job-map {
+          height: 400px;
+        }
+      }
+
+      .leaflet-popup-content-wrapper {
+        max-width: 250px;
+        padding: 8px 10px;
+        word-wrap: break-word;
+      }
+
+      .leaflet-popup-content {
+        color: #111;
+        font-weight: 500;
+      }
+
+      .dark-mode .leaflet-popup-content {
+        color: #e0e0e0;
+      }
+    </style>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <!-- MarkerCluster plugin -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css"
+    />
+    <script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
+
+    {% extends "base.html" %} {% block head %}
+    <script>
+      // Apply dark mode before DOM renders
+      if (localStorage.getItem("darkMode") === "on") {
+        document.documentElement.classList.add("dark-mode");
+      }
     </script>
 
     <!-- External Stylesheets and Scripts -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.css" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css"
+    />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
-{% endblock %}
+    {% endblock %} {% block content %}
+    <div class="home-top">
+      <h1 class="welcome-title">{{ _('Welcome to Job Portal') }}</h1>
 
-{% block content %}
-<div class="home-top">
-    <h1 class="welcome-title">{{ _('Welcome to Job Portal') }}</h1>
+      {% if not user %}
+      <p></p>
+      {% endif %}
 
-    {% if not user %}
-        <p>
-           
-        </p>
-    {% endif %}
-
-    <a href="{{ url_for('post_job') }}" class="post-job-button">
+      <a href="{{ url_for('post_job') }}" class="post-job-button">
         + {{ _('Post a Job') }}
-    </a>
-</div>
+      </a>
+    </div>
 
-<!-- Search & Filter Section -->
-<div class="filter-group">
-    <input type="text" id="searchInput" placeholder="{{ _('Search jobs...') }}" />
+    <!-- Search & Filter Section -->
+    <div class="filter-group">
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="{{ _('Search jobs...') }}"
+      />
 
-    <label for="categoryFilter">{{ _('Category:') }}</label>
-    <select id="categoryFilter">
+      <label for="categoryFilter">{{ _('Category:') }}</label>
+      <select id="categoryFilter">
         <option value="">{{ _('All') }}</option>
         {% for cat in categories %}
-            <option value="{{ cat }}">{{ cat }}</option>
+        <option value="{{ cat }}">{{ cat }}</option>
         {% endfor %}
-    </select>
+      </select>
 
-    <label for="locationFilter">{{ _('City:') }}</label>
-    <select id="locationFilter">
+      <label for="locationFilter">{{ _('City:') }}</label>
+      <select id="locationFilter">
         <option value="">{{ _('All') }}</option>
         {% for job in jobs if job.location %}
-            <option value="{{ job.location }}">{{ job.location }}</option>
+        <option value="{{ job.location }}">{{ job.location }}</option>
         {% endfor %}
-    </select>
+      </select>
 
-    <button type="button" id="applyFilters" class="filter-button">
+      <button type="button" id="applyFilters" class="filter-button">
         {{ _('Filter') }} <i class="fas fa-filter"></i>
-    </button>
-    
-</div>
+      </button>
+    </div>
 
-<h2>{{ _('Recent Job Locations') }}</h2>
-<div id="job-map"></div>
+    <h2>{{ _('Recent Job Locations') }}</h2>
+    <div id="job-map"></div>
 
-<!-- Job Listings -->
-<div class="container">
-    {% for cat in categories %}
-        <div class="column">
-            <div class="category">{{ cat }}</div>
-            <ul>
-                {% for job in jobs if job.category == cat %}
-                    <li>
-                        <a href="{{ url_for('job_detail', job_id=job.id) }}">
-                            {{ job.title }} - {{ job.company }}
-                        </a><br>
-                        <small>{{ _('Posted:') }} {{ job.posted_time }}</small><br>
-                        <small>{{ _('Salary:') }} ${{ "{:,.2f}".format(job.salary) }}</small>
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
-    {% endfor %}
-</div>
+    <!-- Job Listings -->
+    <div class="container">
+      {% for cat in categories %}
+      <div class="column">
+        <div class="category">{{ cat }}</div>
+        <ul>
+          {% for job in jobs if job.category == cat %}
+          <li>
+            <a href="{{ url_for('job_detail', job_id=job.id) }}">
+              {{ job.title }} - {{ job.company }} </a
+            ><br />
+            <small>{{ _('Posted:') }} {{ job.posted_time }}</small><br />
+            <small
+              >{{ _('Salary:') }} ${{ "{:,.2f}".format(job.salary) }}</small
+            >
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endfor %}
+    </div>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        var map = L.map("job-map");
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+          var map = L.map("job-map");
 
-        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-            attribution: 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors',
-        }).addTo(map);
+          L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+              attribution: 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors',
+          }).addTo(map);
 
-        // Haversine distance function
-        function getDistance(lat1, lon1, lat2, lon2) {
-            function toRad(x) {
-                return x * Math.PI / 180;
-            }
-            const R = 6371; // Earth radius in km
-            const dLat = toRad(lat2 - lat1);
-            const dLon = toRad(lon2 - lon1);
-            const a = Math.sin(dLat / 2) ** 2 +
-                      Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
-                      Math.sin(dLon / 2) ** 2;
-            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-            return R * c;
-        }
+          // Haversine distance function
+          function getDistance(lat1, lon1, lat2, lon2) {
+              function toRad(x) {
+                  return x * Math.PI / 180;
+              }
+              const R = 6371; // Earth radius in km
+              const dLat = toRad(lat2 - lat1);
+              const dLon = toRad(lon2 - lon1);
+              const a = Math.sin(dLat / 2) ** 2 +
+                        Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+                        Math.sin(dLon / 2) ** 2;
+              const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+              return R * c;
+          }
 
-        const allJobMarkers = [
-            {% for job in jobs if job.latitude and job.longitude %}
-                {
-                    lat: {{ job.latitude }},
-                    lng: {{ job.longitude }},
-                    title: "{{ job.title|escape }}",
-                    company: "{{ job.company|escape }}",
-                    url: "{{ url_for('job_detail', job_id=job.id) }}",
-                    category: "{{ job.category }}",
-                    location: "{{ job.location }}"
-                },
-            {% endfor %}
-        ];
+          const allJobMarkers = [
+              {% for job in jobs if job.latitude and job.longitude %}
+                  {
+                      lat: {{ job.latitude }},
+                      lng: {{ job.longitude }},
+                      title: "{{ job.title|escape }}",
+                      company: "{{ job.company|escape }}",
+                      url: "{{ url_for('job_detail', job_id=job.id) }}",
+                      category: "{{ job.category }}",
+                      location: "{{ job.location }}"
+                  },
+              {% endfor %}
+          ];
 
-        const markers = L.markerClusterGroup();
-        map.addLayer(markers);
+          const markers = L.markerClusterGroup();
+          map.addLayer(markers);
 
-        let userLat = null;
-        let userLng = null;
+          let userLat = null;
+          let userLng = null;
 
-        function renderMarkers(category = "", location = "") {
-            markers.clearLayers();
+          function renderMarkers(category = "", location = "") {
+              markers.clearLayers();
 
-            const maxDistanceKm = 50;
+              const maxDistanceKm = 50;
 
-            const filtered = allJobMarkers.filter(job =>
-                (category === "" || job.category === category) &&
-                (location === "" || job.location === location) &&
-                (userLat === null || getDistance(userLat, userLng, job.lat, job.lng) <= maxDistanceKm)
-            );
+              const filtered = allJobMarkers.filter(job =>
+                  (category === "" || job.category === category) &&
+                  (location === "" || job.location === location) &&
+                  (userLat === null || getDistance(userLat, userLng, job.lat, job.lng) <= maxDistanceKm)
+              );
 
-            filtered.forEach(job => {
-                const marker = L.marker([job.lat, job.lng])
-                    .bindPopup(`<strong>${job.title}</strong><br>${job.company}<br><a href="${job.url}">View Job</a>`);
-                markers.addLayer(marker);
-            });
+              filtered.forEach(job => {
+                  const marker = L.marker([job.lat, job.lng])
+                      .bindPopup(`<strong>${job.title}</strong><br>${job.company}<br><a href="${job.url}">View Job</a>`);
+                  markers.addLayer(marker);
+              });
 
-            if (filtered.length > 0) {
-                map.fitBounds(markers.getBounds().pad(0.2));
-            } else if (userLat && userLng) {
-                map.setView([userLat, userLng], 12);
-                alert("No jobs found within 50 km of your location.");
-            } else {
-                map.setView([20, 0], 2);
-            }
-        }
+              if (filtered.length > 0) {
+                  map.fitBounds(markers.getBounds().pad(0.2));
+              } else if (userLat && userLng) {
+                  map.setView([userLat, userLng], 12);
+                  alert("No jobs found within 50 km of your location.");
+              } else {
+                  map.setView([20, 0], 2);
+              }
+          }
 
-        // Event listeners for dropdown filters
-        document.getElementById("categoryFilter").addEventListener("change", function () {
-            renderMarkers(this.value, document.getElementById("locationFilter").value);
-        });
+          // Event listeners for dropdown filters
+          document.getElementById("categoryFilter").addEventListener("change", function () {
+              renderMarkers(this.value, document.getElementById("locationFilter").value);
+          });
 
-        document.getElementById("locationFilter").addEventListener("change", function () {
-            renderMarkers(document.getElementById("categoryFilter").value, this.value);
-        });
+          document.getElementById("locationFilter").addEventListener("change", function () {
+              renderMarkers(document.getElementById("categoryFilter").value, this.value);
+          });
 
-        // Geolocation detection
-        map.locate({
-            setView: true,
-            maxZoom: 15,
-            watch: false,
-            enableHighAccuracy: true
-        });
+          // Geolocation detection
+          map.locate({
+              setView: true,
+              maxZoom: 15,
+              watch: false,
+              enableHighAccuracy: true
+          });
 
-        map.on("locationfound", function (e) {
-            userLat = e.latitude;
-            userLng = e.longitude;
+          map.on("locationfound", function (e) {
+              userLat = e.latitude;
+              userLng = e.longitude;
 
-            L.marker(e.latlng).addTo(map)
-                .bindPopup("You are here!").openPopup();
+              L.marker(e.latlng).addTo(map)
+                  .bindPopup("You are here!").openPopup();
 
-            L.circle(e.latlng, {
-                radius: e.accuracy,
-                color: '#136AEC',
-                fillColor: '#136AEC',
-                fillOpacity: 0.2
-            }).addTo(map);
+              L.circle(e.latlng, {
+                  radius: e.accuracy,
+                  color: '#136AEC',
+                  fillColor: '#136AEC',
+                  fillOpacity: 0.2
+              }).addTo(map);
 
-            renderMarkers(); // Show nearby jobs
-        });
+              renderMarkers(); // Show nearby jobs
+          });
 
-        map.on("locationerror", function (e) {
-            console.warn("Geolocation failed or denied:", e.message);
-            alert("Unable to access your location: " + e.message);
-            renderMarkers(); // Show all jobs without distance filter
-        });
-    });
-</script>
+          map.on("locationerror", function (e) {
+              console.warn("Geolocation failed or denied:", e.message);
+              alert("Unable to access your location: " + e.message);
+              renderMarkers(); // Show all jobs without distance filter
+          });
+      });
+    </script>
 
+    <script>
+      const toggleBtn = document.getElementById("darkModeToggle");
+      const icon = toggleBtn.querySelector("i");
 
-<script>
-    const toggleBtn = document.getElementById('darkModeToggle');
-    const icon = toggleBtn.querySelector('i');
-
-    function setDarkMode(on) {
+      function setDarkMode(on) {
         if (on) {
-            document.documentElement.classList.add('dark-mode');
-            localStorage.setItem('darkMode', 'on');
-            icon.classList.remove('fa-moon');
-            icon.classList.add('fa-sun');
+          document.documentElement.classList.add("dark-mode");
+          localStorage.setItem("darkMode", "on");
+          icon.classList.remove("fa-moon");
+          icon.classList.add("fa-sun");
         } else {
-            document.documentElement.classList.remove('dark-mode');
-            localStorage.setItem('darkMode', 'off');
-            icon.classList.remove('fa-sun');
-            icon.classList.add('fa-moon');
+          document.documentElement.classList.remove("dark-mode");
+          localStorage.setItem("darkMode", "off");
+          icon.classList.remove("fa-sun");
+          icon.classList.add("fa-moon");
         }
-    }
+      }
 
-    toggleBtn?.addEventListener('click', () => {
-        const isDark = document.documentElement.classList.contains('dark-mode');
+      toggleBtn?.addEventListener("click", () => {
+        const isDark = document.documentElement.classList.contains("dark-mode");
         setDarkMode(!isDark);
-    });
+      });
 
-    window.addEventListener('DOMContentLoaded', () => {
-        const isDark = document.documentElement.classList.contains('dark-mode');
+      window.addEventListener("DOMContentLoaded", () => {
+        const isDark = document.documentElement.classList.contains("dark-mode");
         if (isDark) {
-            icon?.classList.remove('fa-moon');
-            icon?.classList.add('fa-sun');
+          icon?.classList.remove("fa-moon");
+          icon?.classList.add("fa-sun");
         } else {
-            icon?.classList.remove('fa-sun');
-            icon?.classList.add('fa-moon');
+          icon?.classList.remove("fa-sun");
+          icon?.classList.add("fa-moon");
         }
-    });
-</script>
-{% endblock %}
+      });
+    </script>
+    {% endblock %}
+  </head>
+</html>

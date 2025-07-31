@@ -73,15 +73,17 @@ def home():
 
     jobs = query.all()
 
-    user = User.query.get(session['user_id']) if 'user_id' in session else None
+    user = db.session.get(User, session['user_id']) if 'user_id' in session else None
+
 
     return render_template(
-        'index.html',
-        jobs=jobs,
-        categories=categories,
-        selected_category=selected_category,
-        user=user
-    )
+    'index.html',
+    jobs=jobs,
+    categories=categories,
+    selected_category=selected_category,
+    user=user
+)
+
 
 
 
@@ -237,8 +239,9 @@ def delete_job(job_id):
 @app.route('/job/<int:job_id>')
 def job_detail(job_id):
     job = Job.query.get_or_404(job_id)
-    user = User.query.get(session['user_id']) if 'user_id' in session else None
+    user = db.session.get(User, session['user_id']) if 'user_id' in session else None
     return render_template('job_detail.html', job=job, user=user)
+
 
 
 @app.route('/apply/<int:job_id>', methods=['GET', 'POST'])
@@ -320,7 +323,7 @@ def profile():
         flash('Login required to view profile.', 'warning')
         return redirect(url_for('login'))
 
-    user = User.query.get(session['user_id'])
+    user = db.session.get(User, session['user_id'])
     jobs = Job.query.filter_by(user_id=user.id).all()  # if you're showing jobs
     return render_template('profile.html', user=user, jobs=jobs)
 
@@ -335,7 +338,7 @@ def update_profile():
         flash('You must be logged in to update your profile.', 'danger')
         return redirect(url_for('login'))
 
-    user = User.query.get(session['user_id'])
+    user = db.session.get(User, session['user_id'])
     if user:
         user.username = request.form.get('username')
         user.email = request.form.get('email')
@@ -387,7 +390,7 @@ def confirm_logout():
 
     if request.method == 'POST':
         password = request.form['password']
-        user = User.query.get(session['user_id'])
+        user = db.session.get(User, session['user_id'])
 
         if user and check_password_hash(user.password, password):
             session.clear()

@@ -222,10 +222,17 @@ def delete_job(job_id):
         return redirect(url_for('login'))
 
     job = Job.query.get_or_404(job_id)
+
+    # Optional but recommended: Ensure the logged-in user owns the job
+    if job.user_id != session['user_id']:
+        flash('Unauthorized action.', 'danger')
+        return redirect(url_for('home'))
+
     db.session.delete(job)
     db.session.commit()
     flash('Job deleted successfully.', 'success')
     return redirect(url_for('home'))
+
 
 @app.route('/job/<int:job_id>')
 def job_detail(job_id):

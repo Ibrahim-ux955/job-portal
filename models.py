@@ -14,7 +14,7 @@ class User(db.Model):
     location = db.Column(db.String(100))
 
     # Relationships
-    jobs = db.relationship('Job', backref='poster', lazy=True)
+    jobs = db.relationship('Job', backref='poster', lazy=True, cascade='all, delete', passive_deletes=True)
 
 
 class Job(db.Model):
@@ -39,10 +39,10 @@ class Job(db.Model):
     posted_time = db.Column(db.DateTime, default=datetime.utcnow)
 
     # Foreign key to user
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
 
     # Relationship with applications
-    applications = db.relationship('Application', backref='job', lazy=True)
+    applications = db.relationship('Application', backref='job', lazy=True, cascade='all, delete', passive_deletes=True)
 
 
 class Application(db.Model):
@@ -51,5 +51,5 @@ class Application(db.Model):
     email = db.Column(db.String(120), nullable=False)
     message = db.Column(db.Text, nullable=False)
 
-    job_id = db.Column(db.Integer, db.ForeignKey('job.id'), nullable=False)
+    job_id = db.Column(db.Integer, db.ForeignKey('job.id', ondelete='CASCADE'), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)

@@ -1,0 +1,57 @@
+{% extends 'base.html' %} {% block content %}
+<h2>Edit Job</h2>
+<form method="POST">
+  <label for="title">Title:</label><br />
+  <input
+    type="text"
+    id="title"
+    name="title"
+    value="{{ job.title }}"
+    required
+  /><br /><br />
+
+  <label for="description">Description:</label><br />
+  <textarea id="description" name="description" required>
+{{ job.description }}</textarea
+  ><br /><br />
+
+  <label for="category">Category:</label><br />
+  <input
+    type="text"
+    id="category"
+    name="category"
+    value="{{ job.category }}"
+  /><br /><br />
+
+  <label for="location">Location:</label><br />
+  <input
+    type="text"
+    id="location"
+    name="location"
+    value="{{ job.location }}"
+  /><br /><br />
+
+  <label for="company">Company:</label><br />
+  <input
+    type="text"
+    id="company"
+    name="company"
+    value="{{ job.company }}"
+  /><br /><br />
+
+  <label for="salary">Salary:</label><br />
+  <input
+    type="text"
+    id="salary"
+    name="salary"
+    value="{{ job.salary }}"
+  /><br /><br />
+
+  <label for="qualifications">Qualifications:</label><br />
+  <textarea id="qualifications" name="qualifications">
+{{ job.qualifications }}</textarea
+  ><br /><br />
+
+  <button type="submit">Update Job</button>
+</form>
+{% endblock %}

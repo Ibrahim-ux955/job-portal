@@ -200,6 +200,29 @@ def edit_job(job_id):
         return redirect(url_for('login'))
 
     job = Job.query.get_or_404(job_id)
+
+    # Optional: Only allow the user who posted the job to edit it
+    if job.user_id != session['user_id']:
+        flash('You are not authorized to edit this job.', 'danger')
+        return redirect(url_for('job_detail', job_id=job.id))
+
+    if request.method == 'POST':
+        job.title = request.form.get('title', '')
+        job.description = request.form.get('description', '')
+        job.category = request.form.get('category', '')
+        job.location = request.form.get('location', '')
+        job.company = request.form.get('company', '')
+        job.salary = request.form.get('salary', '')
+        job.qualifications = request.form.get('qualifications', '')
+
+        db.session.commit()
+        flash('Job updated successfully!', 'success')
+        return redirect(url_for('job_detail', job_id=job.id))
+
+    return render_template('edit_job.html', job=job)
+
+
+    job = Job.query.get_or_404(job_id)
     if request.method == 'POST':
         job.title = request.form['title']
         job.company = request.form['company']

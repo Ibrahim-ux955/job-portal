@@ -373,12 +373,6 @@ def update_profile():
 
 
 
-
-
-
-
-
-
 @app.route('/forgot_password', methods=['GET', 'POST'])
 def forgot_password():
     if request.method == 'POST':

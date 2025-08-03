@@ -121,6 +121,13 @@ header {
             color: #0c5460;
             border: 1px solid #bee5eb;
         }
+
+        <style>
+  .logo-img {
+    height: 80px; /* Change this value to make it big or small */
+  }
+</style>
+
     </style>
 </head>
 <body>
@@ -128,7 +135,7 @@ header {
       <div>
         <h1>
             <a href="{{ url_for('home') }}">
-                <img src="{{ url_for('static', filename='job_portal_logo.png') }}" alt="Job Portal" style="height: 50px;">
+              <img src="{{ url_for('static', filename='job_portal_logo.png') }}" alt="Job Portal Logo" style="height: 80px;">
             </a>
         </h1>
     </div>

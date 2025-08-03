@@ -125,9 +125,14 @@ header {
 </head>
 <body>
     <header>
-        <div>
-            <h1><a href="{{ url_for('home') }}">{{ _('Job Portal') }}</a></h1>
-        </div>
+      <div>
+        <h1>
+            <a href="{{ url_for('home') }}">
+                <img src="{{ url_for('static', filename='job_portal_logo.png') }}" alt="Job Portal" style="height: 50px;">
+            </a>
+        </h1>
+    </div>
+    
         <nav style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
             {% if user %}
                 <span>Welcome, {{ user.username }}!</span>        
